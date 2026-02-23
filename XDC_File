@@ -1,0 +1,66 @@
+# =============================================================================
+# ZedBoard Minimal Constraints (XDC)
+# For top.v ports:
+#   GCLK
+#   SW0..SW7
+#   BTNC BTND BTNL BTNR BTNU
+#   LD0..LD7
+#
+# Notes:
+# - Assumes ZedBoard (XC7Z020) with Avnet reference pinout.
+# - Adds create_clock for 100 MHz oscillator.
+# =============================================================================
+
+# -----------------------------------------------------------------------------
+# Clock Source (100 MHz)
+# -----------------------------------------------------------------------------
+set_property PACKAGE_PIN Y9 [get_ports {GCLK}]
+create_clock -period 10.000 -name sys_clk [get_ports {GCLK}]
+
+# -----------------------------------------------------------------------------
+# User DIP Switches (8)
+# -----------------------------------------------------------------------------
+set_property PACKAGE_PIN F22 [get_ports {SW0}]
+set_property PACKAGE_PIN G22 [get_ports {SW1}]
+set_property PACKAGE_PIN H22 [get_ports {SW2}]
+set_property PACKAGE_PIN F21 [get_ports {SW3}]
+set_property PACKAGE_PIN H19 [get_ports {SW4}]
+set_property PACKAGE_PIN H18 [get_ports {SW5}]
+set_property PACKAGE_PIN H17 [get_ports {SW6}]
+set_property PACKAGE_PIN M15 [get_ports {SW7}]
+
+# -----------------------------------------------------------------------------
+# User LEDs (8)
+# -----------------------------------------------------------------------------
+set_property PACKAGE_PIN T22 [get_ports {LD0}]
+set_property PACKAGE_PIN T21 [get_ports {LD1}]
+set_property PACKAGE_PIN U22 [get_ports {LD2}]
+set_property PACKAGE_PIN U21 [get_ports {LD3}]
+set_property PACKAGE_PIN V22 [get_ports {LD4}]
+set_property PACKAGE_PIN W22 [get_ports {LD5}]
+set_property PACKAGE_PIN U19 [get_ports {LD6}]
+set_property PACKAGE_PIN U14 [get_ports {LD7}]
+
+# -----------------------------------------------------------------------------
+# User Push Buttons (5)
+# -----------------------------------------------------------------------------
+set_property PACKAGE_PIN P16 [get_ports {BTNC}]
+set_property PACKAGE_PIN R16 [get_ports {BTND}]
+set_property PACKAGE_PIN N15 [get_ports {BTNL}]
+set_property PACKAGE_PIN R18 [get_ports {BTNR}]
+set_property PACKAGE_PIN T18 [get_ports {BTNU}]
+
+# -----------------------------------------------------------------------------
+# IOSTANDARD Constraints (Bank-wide, matches Avnet ZedBoard style)
+# -----------------------------------------------------------------------------
+# Bank 33 fixed to 3.3V on ZedBoard (LEDs are in Bank 33)
+set_property IOSTANDARD LVCMOS33 [get_ports -of_objects [get_iobanks 33]]
+
+# Bank 34 defaults to 1.8V (buttons in Bank 34 in Avnet pinout)
+set_property IOSTANDARD LVCMOS18 [get_ports -of_objects [get_iobanks 34]]
+
+# Bank 35 defaults to 1.8V (switches in Bank 35 in Avnet pinout)
+set_property IOSTANDARD LVCMOS18 [get_ports -of_objects [get_iobanks 35]]
+
+# Bank 13 fixed to 3.3V (not used in this minimal design, but safe)
+set_property IOSTANDARD LVCMOS33 [get_ports -of_objects [get_iobanks 13]]
